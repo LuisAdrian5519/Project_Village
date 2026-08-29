@@ -1,0 +1,9 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Extra rules (opcional)
+export_presets.cfg
+.DS_Store
+Thumbs.db
+*.tmp
