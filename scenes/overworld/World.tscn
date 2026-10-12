@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cgklt47s8d0i"]
+
+[ext_resource type="PackedScene" uid="uid://cv6r3nxy2tg8c" path="res://scenes/overworld/Player.tscn" id="1_05nb3"]
+[ext_resource type="Texture2D" uid="uid://bdari56ael0il" path="res://assets/grid_back.png" id="1_c65ya"]
+[ext_resource type="PackedScene" uid="uid://dkqm5xn2r3d32" path="res://scenes/overworld/Enemy.tscn" id="3_ush20"]
+
+[node name="World" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+texture = ExtResource("1_c65ya")
+centered = false
+
+[node name="Player" parent="." instance=ExtResource("1_05nb3")]
+position = Vector2(321, 303)
+
+[node name="Enemy" parent="." instance=ExtResource("3_ush20")]
+position = Vector2(909, 482)

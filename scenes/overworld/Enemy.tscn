@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkqm5xn2r3d32"]
+
+[ext_resource type="Texture2D" uid="uid://bmiaiowcqqssu" path="res://assets/icon.svg" id="1_4opmx"]
+[ext_resource type="Script" uid="uid://d378ydq6p6yte" path="res://scenes/overworld/enemy.gd" id="1_nd463"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nd463"]
+radius = 63.1506
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_l86yc"]
+radius = 240.102
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_nd463")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.839216, 0.580392, 1, 1)
+texture = ExtResource("1_4opmx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_nd463")
+
+[node name="EncounterZone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EncounterZone"]
+shape = SubResource("CircleShape2D_l86yc")
+
+[connection signal="body_entered" from="EncounterZone" to="." method="_on_encounter_zone_body_entered"]
