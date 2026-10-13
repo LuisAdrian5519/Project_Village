@@ -3,3 +3,4 @@ extends CharacterBody2D
 func _on_encounter_zone_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player"):
 		print("Combate iniciado")
+		CombatManager.start_combat()

@@ -15,6 +15,10 @@ run/main_scene="uid://cgklt47s8d0i"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://assets/icon.svg"
 
+[autoload]
+
+CombatManager="*res://autoload/combat_manager.gd"
+
 [dotnet]
 
 project/assembly_name="Project_Village"
