@@ -23,5 +23,12 @@ func _set_state(new_state: State) -> void:
 
 # TEMPORAL: Esc termina el combate
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") and current_state != State.EXPLORE:
+	if current_state == State.EXPLORE:
+		return
+	if event.is_action_pressed("ui_cancel"):
 		end_combat()
+	elif event.is_action_pressed("ui_accept"):
+		if current_state == State.PLAYER_TURN:
+			_set_state(State.ENEMY_TURN)
+		else:
+			_set_state(State.PLAYER_TURN)

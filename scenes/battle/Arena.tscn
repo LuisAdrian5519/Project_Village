@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://ldx0ioa2aah1"]
+
+[ext_resource type="Script" uid="uid://xbr8260gegy1" path="res://scenes/battle/arena.gd" id="1_2jp8p"]
+[ext_resource type="PackedScene" uid="uid://ca0d0r08tapwu" path="res://scenes/battle/BattlePlayer.tscn" id="2_4cmhu"]
+[ext_resource type="Texture2D" uid="uid://bmiaiowcqqssu" path="res://assets/icon.svg" id="3_4cmhu"]
+
+[node name="Arena" type="Node2D"]
+script = ExtResource("1_2jp8p")
+
+[node name="Soul" parent="." instance=ExtResource("2_4cmhu")]
+
+[node name="EnemySprite" type="Sprite2D" parent="."]
+modulate = Color(0.831562, 0.144648, 0.431299, 1)
+position = Vector2(350, 0)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_4cmhu")

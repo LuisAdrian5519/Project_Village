@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cgklt47s8d0i"]
+[gd_scene load_steps=5 format=3 uid="uid://cgklt47s8d0i"]
 
 [ext_resource type="PackedScene" uid="uid://cv6r3nxy2tg8c" path="res://scenes/overworld/Player.tscn" id="1_05nb3"]
 [ext_resource type="Texture2D" uid="uid://bdari56ael0il" path="res://assets/grid_back.png" id="1_c65ya"]
 [ext_resource type="PackedScene" uid="uid://dkqm5xn2r3d32" path="res://scenes/overworld/Enemy.tscn" id="3_ush20"]
+[ext_resource type="PackedScene" uid="uid://ldx0ioa2aah1" path="res://scenes/battle/Arena.tscn" id="4_mkxic"]
 
 [node name="World" type="Node2D"]
 
@@ -15,3 +16,8 @@ position = Vector2(321, 303)
 
 [node name="Enemy" parent="." instance=ExtResource("3_ush20")]
 position = Vector2(909, 482)
+
+[node name="BattleLayer" type="CanvasLayer" parent="."]
+
+[node name="Arena" parent="BattleLayer" instance=ExtResource("4_mkxic")]
+position = Vector2(700, 200)
