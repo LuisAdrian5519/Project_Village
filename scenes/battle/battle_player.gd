@@ -9,6 +9,7 @@ const START_POS := Vector2(-350, 0)  # lado izquierdo de la pantalla de batalla
 @onready var arena = get_parent()
 
 func _ready() -> void:
+	add_to_group("battle_player")
 	position = START_POS
 	CombatManager.state_changed.connect(_on_state_changed)
 
