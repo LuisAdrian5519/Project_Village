@@ -1,5 +1,8 @@
 extends Node2D
 
+const MIN_RELOCATION_DISTANCE: float = 120.0
+const SPAWN_DEBUG_SHADER: Shader = preload("res://scenes/battle/spawn_debug.gdshader")
+
 const SAV_SCENE: PackedScene = preload(
 	"res://scenes/battle/SavProjectile.tscn"
 )
@@ -14,15 +17,47 @@ const SAV_SCENE: PackedScene = preload(
 @export var down_time: float = 0.5
 @export var spawn_margin: float = 80.0
 @export var safe_distance: float = 180.0
+@export var show_spawn_debug: bool = true
 
 var attack_id: int = 0
+var _spawn_debug: ColorRect
+var _spawn_debug_material: ShaderMaterial
 
 func _ready() -> void:
 	visible = false
 	size = get_viewport_rect().size   # el área cubre toda la pantalla
 	position = size / 2.0             # y se centra
 	queue_redraw()                    # vuelve a ejecutar _draw() con el nuevo tamaño
+	_create_spawn_debug()
 	CombatManager.state_changed.connect(_on_state_changed)
+
+func _create_spawn_debug() -> void:
+	_spawn_debug_material = ShaderMaterial.new()
+	_spawn_debug_material.shader = SPAWN_DEBUG_SHADER
+	_spawn_debug = ColorRect.new()
+	_spawn_debug.name = "SpawnDebug"
+	_spawn_debug.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_spawn_debug.material = _spawn_debug_material
+	add_child(_spawn_debug)
+	# Sobre el fondo de Arena, debajo del personaje, la planta y los proyectiles.
+	move_child(_spawn_debug, 0)
+	_update_spawn_debug()
+
+func _process(_delta: float) -> void:
+	_spawn_debug.visible = show_spawn_debug
+	if visible and show_spawn_debug:
+		_update_spawn_debug()
+
+func _update_spawn_debug() -> void:
+	_spawn_debug.position = -size / 2.0
+	_spawn_debug.size = size
+	_spawn_debug.visible = show_spawn_debug
+	_spawn_debug_material.set_shader_parameter("arena_size", size)
+	_spawn_debug_material.set_shader_parameter("spawn_margin", spawn_margin)
+	_spawn_debug_material.set_shader_parameter("player_position", soul.position)
+	_spawn_debug_material.set_shader_parameter("plant_position", enemy_sprite.position)
+	_spawn_debug_material.set_shader_parameter("safe_distance", safe_distance)
+	_spawn_debug_material.set_shader_parameter("relocation_distance", MIN_RELOCATION_DISTANCE)
 
 # _draw() se ejecuta una vez para dibujar este nodo con código.
 # Dibujamos la caja centrada en el origen del Arena.
@@ -90,7 +125,7 @@ func _pick_spawn_position() -> Vector2:
 			candidate.distance_to(soul.position) >= safe_distance
 		)
 		var far_from_previous := (
-			candidate.distance_to(enemy_sprite.position) >= 120.0
+			candidate.distance_to(enemy_sprite.position) >= MIN_RELOCATION_DISTANCE
 		)
 
 		if far_from_player and far_from_previous:
