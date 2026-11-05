@@ -17,6 +17,9 @@ const SAV_SCENE: PackedScene = preload(
 @export var down_time: float = 0.5
 @export var spawn_margin: float = 80.0
 @export var safe_distance: float = 180.0
+@export var emerge_delay: float = 0.3
+
+# Debug variables
 @export var show_spawn_debug: bool = true
 
 var attack_id: int = 0
@@ -75,7 +78,10 @@ func _on_state_changed(new_state: int) -> void:
 	enemy_sprite.show()
 	
 	if new_state == CombatManager.State.ENEMY_TURN:
-		_fire_burst(attack_id)
+		_run_enemy_turn(attack_id)
+	else:
+		for projectile in get_tree().get_nodes_in_group("enemy_projectiles"):
+			projectile.queue_free()
 		
 func _fire_burst(this_attack_id: int) -> void:
 	for shot in range(3):
@@ -87,8 +93,6 @@ func _fire_burst(this_attack_id: int) -> void:
 		# Solo esperamos si todavía queda otro disparo.
 		if shot < 2:
 			await get_tree().create_timer(shot_interval).timeout
-			
-	await _burrow_and_relocate(this_attack_id)
 		
 func _fire_sav() -> void:
 	var projectile = SAV_SCENE.instantiate()
@@ -96,6 +100,9 @@ func _fire_sav() -> void:
 	projectile.position = enemy_sprite.position
 	projectile.direction = (soul.position - enemy_sprite.position).normalized()
 	
+	projectile.arena_bounds = Rect2(-size / 2.0, size)
+	
+	projectile.add_to_group("enemy_projectiles")
 	add_child(projectile)
 	
 func _burrow_and_relocate(this_attack_id: int) -> void:
@@ -133,4 +140,34 @@ func _pick_spawn_position() -> Vector2:
 
 	# Si no encontramos un sitio válido, conservamos el anterior.
 	return enemy_sprite.position
+	
+func _run_enemy_turn(this_attack_id: int) -> void:
+	for burst in range(3):
+		if this_attack_id != attack_id:
+			return
+
+		await _fire_burst(this_attack_id)
+
+		if this_attack_id != attack_id:
+			return
+
+		# Después de la tercera ráfaga, permanece donde está.
+		if burst < 2:
+			await _burrow_and_relocate(this_attack_id)
+
+			if this_attack_id != attack_id:
+				return
+
+			await get_tree().create_timer(emerge_delay).timeout
+
+	while not get_tree().get_nodes_in_group("enemy_projectiles").is_empty():
+		if this_attack_id != attack_id:
+			return
+
+		await get_tree().process_frame
+
+	if this_attack_id != attack_id:
+		return
+
+	CombatManager.finish_enemy_turn()
 	
