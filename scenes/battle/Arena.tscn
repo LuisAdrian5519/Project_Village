@@ -2,15 +2,12 @@
 
 [ext_resource type="Script" uid="uid://xbr8260gegy1" path="res://scenes/battle/arena.gd" id="1_2jp8p"]
 [ext_resource type="PackedScene" uid="uid://ca0d0r08tapwu" path="res://scenes/battle/BattlePlayer.tscn" id="2_4cmhu"]
-[ext_resource type="Texture2D" uid="uid://bmiaiowcqqssu" path="res://assets/icon.svg" id="3_4cmhu"]
+[ext_resource type="PackedScene" uid="uid://cro87htemu4v1" path="res://scenes/battle/carnivorous_plant.tscn" id="3_4cmhu"]
 
 [node name="Arena" type="Node2D"]
 script = ExtResource("1_2jp8p")
 
 [node name="Soul" parent="." instance=ExtResource("2_4cmhu")]
 
-[node name="EnemySprite" type="Sprite2D" parent="."]
-modulate = Color(0.831562, 0.144648, 0.431299, 1)
+[node name="CarnivorousPlant" parent="." instance=ExtResource("3_4cmhu")]
 position = Vector2(350, 0)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("3_4cmhu")

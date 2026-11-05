@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
-@export var speed: float = 150.0
+@export var speed: float = 450.0
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if CombatManager.current_state != CombatManager.State.EXPLORE:
 		return  # en combate el personaje no se mueve directamente
 		

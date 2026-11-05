@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cro87htemu4v1"]
+
+[ext_resource type="Texture2D" uid="uid://bmiaiowcqqssu" path="res://assets/icon.svg" id="1_k85ih"]
+
+[node name="CarnivorousPlant" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(3.94672e-06, 0.971434, 0.369417, 1)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_k85ih")
